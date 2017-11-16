@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SimpleBar</title>
+    <style>
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+        
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="./assert/d3.v3.min.js"></script>
+    <script>
+        var svg_width = 600;
+        var svg_height = 600;
+        var svg = d3.select('body').append('svg') //往body最后追加svg元素
+            .attr('width', svg_width) //设置svg元素的长宽
+            .attr('height', svg_height);
+
+        var dataset = [30, 20, 45, 12, 21, 50]; //数据集
+
+        //d3.scale.linear() 用于生成一个线性的可缩放的尺度，它的初始 domain 为 [ 0 , 1 ] ，初始 range 为 [ 0 , 1 ] ，
+        //这里的[ ]表示的是范围。 现在我们把 domain 设定为 [ 0 , d3.max(dataset) ] ，即0到 dataset 中的最大值。 range设定为0到500。 
+        //这表示如果数据是45，则返回500，如果是30，则返回333.333。
+        //scale 表示 比例  d3.max()和d2.min()常和scale一起出现
+        var xScale = d3.scale.linear()
+            .domain([0, d3.max(dataset)]) //domain是定义域
+            .range([0, 500]); //range是值域
+
+        //d3.svg.axis() 调用这个函数就会生成一个坐标轴的函数
+        //scale() 这个函数用于指定坐标轴的 scale （比例）
+        //orient() 这个函数用于指定坐标轴的分割点和数字的朝向，在哪个方向显示。 bottom 表示在坐标轴的下方显示。
+        var axis = d3.svg.axis()
+            .scale(xScale)
+            .orient('bottom');
+
+        //在 svg 中添加一个g，g是 svg 中的一个属性，是 group 的意思，它表示一组什么东西，如一组 lines ， rects ，circles 其实坐标轴就是由这些东西构成的。
+        //transform 属性用于移动坐标轴在 svg 中的位置。
+        //call 相当于定义一个函数，再把选择的元素给它
+        svg.append("g")
+            .attr('class', 'axis')
+            .attr('transform', 'translate(10,190)')
+            .call(axis);
+
+        svg.selectAll('rect') //在 svg 中选择所有的 rect 元素，但是实际上这时候 svg 中还不存在 rect 元素。这是 D3 一个比较特殊的地方，即它能够选择一个空集
+            .data(dataset) //将数据集绑定到svg上
+            .enter() //enter 表示当所需要的元素（这里为 rect ）比绑定的数据集合的元素（这里为 dataset ）少时，自动添加位置，使得与数据集合的数量一样多
+            .append('rect') //紧接上一行
+            .attr('x', 10) //attr设定rect元素的各项属性
+            .attr('y', function(d, i) {
+                return i * 30;
+            })
+            .attr('width', xScale)
+            .attr('height', 28)
+            .attr('fill', 'red');
+    </script>
+</body>
+
+</html>

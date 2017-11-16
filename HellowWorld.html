@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HelloWorld</title>
+</head>
+
+<body>
+    <p>Hello</p>
+    <p>PGG</p>
+    <span>Han</span>
+    <script src="./assert/d3.v3.min.js"></script>
+    <script>
+        var data = ['pgg.population', 'pgg.tools', 'pgg.han']; //数据集合
+        d3.select('body').append('p'); //body末尾追加p元素
+        d3.select('body').select('span').remove(); //移除选中的span元素
+        var p = d3.select('body').selectAll('p'); //选择元素
+        p.data(data).text(function(d, i) { //使用数据集合
+            return d;
+        });
+        p.style("color", "red"); //给选中的所有p元素添加样式
+        p.style("font-size", "30px");
+    </script>
+</body>
+
+</html>
