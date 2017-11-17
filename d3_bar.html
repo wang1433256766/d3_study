@@ -79,7 +79,22 @@
                 return xScale.rangeBand(); //ordinal.rangeBand() 返回 使用rangeBands()设定后每一段的 宽度
             })
             .attr("height", yScale)
-            .attr("fill", "red");
+            .attr("fill", "red")
+            .on('click', function(d, i) {
+                d3.select(this)
+                    .attr('fill', 'green');
+            })
+            .on('mouseover', function(d, i) {
+                d3.select(this)
+                    .attr('fill', 'blue');
+            })
+            .on('mouseout', function(d, i) {
+                d3.select(this)
+                    .transition()
+                    .delay(500)
+                    .duration(1500)
+                    .attr('fill', 'red')
+            });
 
         //dx ,dy 相对于前一个字符的长度
         svg.selectAll("text")
